@@ -1,0 +1,70 @@
+{
+  "name": "@earthquake-tracker/frontend",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "frontend",
+    "projectType": "application",
+    "sourceRoot": "frontend",
+    "targets": {
+      "build": {
+        "executor": "@nx/next:build",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "defaultConfiguration": "production",
+        "options": {
+          "outputPath": "dist/packages/frontend"
+        }
+      },
+      "serve": {
+        "executor": "@nx/next:server",
+        "defaultConfiguration": "development",
+        "options": {
+          "buildTarget": "frontend:build",
+          "dev": true
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "frontend:build:development",
+            "dev": true
+          },
+          "production": {
+            "buildTarget": "frontend:build:production",
+            "dev": false
+          }
+        }
+      },
+      "test": {
+        "options": {
+          "passWithNoTests": true
+        }
+      },
+      "typecheck": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "tsc --noEmit",
+          "cwd": "packages/frontend"
+        }
+      },
+      "lint": {
+        "executor": "@nx/eslint:lint",
+        "outputs": [
+          "{options.outputFile}"
+        ],
+        "options": {
+          "lintFilePatterns": [
+            "packages/frontend/**/*.{ts,tsx}"
+          ]
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@apollo/client": "^3.12.10",
+    "graphql": "^16.10.0",
+    "next": "~15.1.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  }
+}
