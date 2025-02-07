@@ -29,23 +29,22 @@
   "include": [
     "../dist/frontend/.next/types/**/*.ts",
     "../frontend/.next/types/**/*.ts",
+    ".next/types/**/*.ts",
     "next-env.d.ts",
     "src/**/*.js",
     "src/**/*.jsx",
     "src/**/*.ts",
     "src/**/*.tsx",
-    ".next/types/**/*.ts"
+    "../../dist/packages/frontend/.next/types/**/*.ts"
   ],
   "exclude": [
     "out-tsc",
     "dist",
     "node_modules",
-    "jest.config.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.test.ts",
     ".next",
     "eslint.config.js",
     "eslint.config.cjs",
-    "eslint.config.mjs"
+    "eslint.config.mjs",
+    ".next"
   ]
 }

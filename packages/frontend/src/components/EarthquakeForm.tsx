@@ -31,6 +31,14 @@ const UPDATE_EARTHQUAKE = gql`
   }
 `;
 
+const DELETE_EARTHQUAKE = gql`
+  mutation DeleteEarthquake($id: ID!) {
+    deleteEarthquake(id: $id) {
+      id
+    }
+  }
+`;
+
 interface EarthquakeFormProps {
   earthquake?: Earthquake;
   onClose: () => void;
@@ -78,6 +86,19 @@ export const EarthquakeForm = ({
     }
   );
 
+  const [deleteEarthquake] = useMutation<EarthquakeMutationResponse>(
+    DELETE_EARTHQUAKE,
+    {
+      onCompleted: () => {
+        onSuccess();
+        onClose();
+      },
+      onError: (error) => {
+        setError(error.message);
+      },
+    }
+  );
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -97,7 +118,20 @@ export const EarthquakeForm = ({
           },
         });
       }
-    } catch (err) {
+    } catch {
+      setError('An unexpected error occurred');
+    }
+  };
+
+  const handleDelete = async () => {
+    setError('');
+    try {
+      if (earthquake?.id) {
+        await deleteEarthquake({
+          variables: { id: earthquake.id },
+        });
+      }
+    } catch {
       setError('An unexpected error occurred');
     }
   };
@@ -156,6 +190,15 @@ export const EarthquakeForm = ({
         >
           Cancel
         </button>
+        {earthquake && (
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Delete
+          </button>
+        )}
         <button
           type="submit"
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"

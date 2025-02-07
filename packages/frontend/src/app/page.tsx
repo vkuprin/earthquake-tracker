@@ -2,7 +2,6 @@
 
 import { EarthquakeList } from '@/components/EarthquakeList';
 import { FilterPanel } from '@/components/FilterPanel';
-import { DashboardStats } from '@/components/DashboardStats';
 import { useState } from 'react';
 
 export default function HomePage() {
@@ -17,7 +16,9 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="w-full px-4 py-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Earthquake Tracker</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">
+          Earthquake Tracker
+        </h1>
 
         {/*<div className="mb-8">*/}
         {/*  <DashboardStats />*/}

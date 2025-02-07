@@ -251,6 +251,15 @@ importers:
       '@nx/react':
         specifier: ^20.4.1
         version: 20.4.1(@babel/traverse@7.26.7)(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@swc/types@0.1.17)(typescript@5.7.3))(@swc/core@1.5.29(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)(@types/node@18.16.9)(@zkochan/js-yaml@0.0.7)(eslint@9.19.0(jiti@1.21.7))(next@15.1.6(@babel/core@7.26.7)(@playwright/test@1.50.1)(babel-plugin-macros@3.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.84.0))(nx@20.4.1(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@swc/types@0.1.17)(typescript@5.7.3))(@swc/core@1.5.29(@swc/helpers@0.5.15)))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)(vue-tsc@1.8.27(typescript@5.7.3))(webpack-cli@5.1.4(webpack-dev-server@5.2.0)(webpack@5.97.1))(webpack@5.97.1(@swc/core@1.5.29(@swc/helpers@0.5.15))(webpack-cli@5.1.4(webpack-dev-server@5.2.0)(webpack@5.97.1)))
+      autoprefixer:
+        specifier: 10.4.13
+        version: 10.4.13(postcss@8.4.38)
+      postcss:
+        specifier: 8.4.38
+        version: 8.4.38
+      tailwindcss:
+        specifier: 3.4.3
+        version: 3.4.3(ts-node@10.9.1(@swc/core@1.5.29(@swc/helpers@0.5.15))(@types/node@18.16.9)(typescript@5.7.3))
 
   packages/shared-types:
     devDependencies:
