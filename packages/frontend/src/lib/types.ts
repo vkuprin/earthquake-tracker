@@ -7,16 +7,35 @@ export interface Earthquake {
   updatedAt?: string;
 }
 
+export interface EarthquakeEdge {
+  node: Earthquake;
+}
+
+export interface FilterState {
+  location?: string;
+  magnitude?: number;
+  date?: string;
+}
+
+export interface PageInfo {
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  startCursor: string;
+  endCursor: string;
+  totalCount: number;
+}
+
 export interface FormData {
   location: string;
   magnitude: number;
   date: string;
 }
 
-export interface UpdateEarthquakeInput {
-  location?: string;
-  magnitude?: number;
-  date?: string;
+export interface EarthquakesResponse {
+  earthquakes: {
+    edges: Earthquake[];
+    pageInfo: PageInfo;
+  };
 }
 
 export interface EarthquakeMutationResponse {

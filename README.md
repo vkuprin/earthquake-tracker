@@ -5,18 +5,21 @@ A full-stack application for tracking and managing earthquake data built with Ty
 ## Architecture Overview
 
 ### Backend Architecture
+
 - **Framework**: Express.js with Apollo Server 4
 - **Database**: PostgreSQL with Prisma ORM
 - **API**: GraphQL
 - **Data Import**: CSV parsing functionality
 
 ### Frontend Architecture
+
 - **Framework**: Next.js with TypeScript
 - **Data Fetching**: Apollo Client
 - **State Management**: React hooks and Apollo Cache
 - **Styling**: TailwindCSS
 
 ## Project Structure
+
 ```
 earthquake-tracker/
 ├── packages/
@@ -37,12 +40,15 @@ earthquake-tracker/
 ## Setup and Installation
 
 ### Prerequisites
+
 - Node.js (v18 or later)
 - pnpm (v8 or later)
 - PostgreSQL
 
 ### Development Setup
+
 1. Clone and Install:
+
 ```bash
 git clone <repository-url>
 cd earthquake-tracker
@@ -50,6 +56,7 @@ pnpm install
 ```
 
 2. Database Setup:
+
 ```bash
 # In packages/backend
 cd packages/backend
@@ -65,6 +72,7 @@ nx run backend:seed
 ```
 
 3. Start Development Servers:
+
 ```bash
 # Start backend (http://localhost:4000)
 nx serve backend
@@ -78,6 +86,7 @@ nx serve frontend
 ### GraphQL Schema
 
 #### Types
+
 ```graphql
 type Earthquake {
   id: ID!
@@ -113,6 +122,7 @@ type EarthquakesResponse {
 ```
 
 #### Queries
+
 ```graphql
 # Get paginated earthquakes with optional filtering
 query GetEarthquakes($filter: EarthquakeFilter, $pagination: PaginationInput) {
@@ -143,6 +153,7 @@ query GetEarthquake($id: ID!) {
 ```
 
 #### Mutations
+
 ```graphql
 # Create new earthquake
 mutation CreateEarthquake($input: EarthquakeInput!) {
@@ -175,7 +186,9 @@ mutation DeleteEarthquake($id: ID!) {
 ### Frontend Components
 
 #### EarthquakeList
+
 Main component for displaying earthquakes with pagination and filtering.
+
 ```typescript
 interface EarthquakeListProps {
   filters: FilterState;
@@ -183,7 +196,9 @@ interface EarthquakeListProps {
 ```
 
 #### EarthquakeForm
+
 Form component for creating and updating earthquakes.
+
 ```typescript
 interface EarthquakeFormProps {
   earthquake?: Earthquake;
@@ -193,7 +208,9 @@ interface EarthquakeFormProps {
 ```
 
 #### FilterPanel
+
 Component for handling earthquake filtering.
+
 ```typescript
 interface FilterPanelProps {
   filters: FilterState;
@@ -217,11 +234,13 @@ model Earthquake {
 ## Error Handling
 
 ### Backend
+
 - GraphQL errors are propagated with proper error codes
 - Database errors are caught and mapped to user-friendly messages
 - Invalid input validation is handled at the GraphQL schema level
 
 ### Frontend
+
 - Apollo error states are handled in components
 - Loading states are displayed during data fetches
 - Form validation provides immediate user feedback
@@ -230,6 +249,7 @@ model Earthquake {
 ## Available Scripts
 
 ### Root Directory
+
 ```bash
 pnpm lint          # Run linting across all packages
 pnpm typecheck     # Run type checking
@@ -237,6 +257,7 @@ pnpm test          # Run tests
 ```
 
 ### Backend
+
 ```bash
 nx serve backend   # Start development server
 nx build backend   # Build for production
@@ -245,6 +266,7 @@ nx run backend:seed # Import CSV data
 ```
 
 ### Frontend
+
 ```bash
 nx serve frontend  # Start development server
 nx build frontend  # Build for production
@@ -254,11 +276,13 @@ nx test frontend   # Run frontend tests
 ## Deployment
 
 1. Build all packages:
+
 ```bash
 pnpm build
 ```
 
 2. Backend deployment:
+
 ```bash
 cd packages/backend
 # Set production environment variables
@@ -269,6 +293,7 @@ node dist/main.js
 ```
 
 3. Frontend deployment:
+
 ```bash
 cd packages/frontend
 # Build Next.js application

@@ -15,19 +15,22 @@ export default function HomePage() {
   });
 
   return (
-    <main className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Earthquake Tracker</h1>
+    <main className="min-h-screen bg-gray-50">
+      <div className="w-full px-4 py-6">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Earthquake Tracker</h1>
 
-      <div className="mb-8">
-        <DashboardStats />
-      </div>
+        {/*<div className="mb-8">*/}
+        {/*  <DashboardStats />*/}
+        {/*</div>*/}
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <div className="lg:col-span-1">
-          <FilterPanel filters={filters} onFilterChange={setFilters} />
-        </div>
-        <div className="lg:col-span-3">
-          <EarthquakeList filters={filters} />
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="lg:w-80">
+            <FilterPanel filters={filters} onFilterChange={setFilters} />
+          </div>
+
+          <div className="flex-grow">
+            <EarthquakeList filters={filters} />
+          </div>
         </div>
       </div>
     </main>
