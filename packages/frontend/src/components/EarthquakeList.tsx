@@ -37,11 +37,11 @@ export const EarthquakeList = ({ filters }: EarthquakeListProps) => {
   const [selectedEarthquake, setSelectedEarthquake] = useState<
     Earthquake | undefined
   >();
+
   const pageSize = 10;
 
-  const { loading, error, data, refetch } = useQuery<EarthquakesResponse>(
-    GET_EARTHQUAKES,
-    {
+  const { loading, error, data, previousData, refetch } =
+    useQuery<EarthquakesResponse>(GET_EARTHQUAKES, {
       variables: {
         filter: filters,
         pagination: {
@@ -49,8 +49,10 @@ export const EarthquakeList = ({ filters }: EarthquakeListProps) => {
           take: pageSize,
         },
       },
-    }
-  );
+      notifyOnNetworkStatusChange: true,
+    });
+
+  const currentData = data ?? previousData;
 
   const handleOpenModal = (earthquake?: Earthquake) => {
     setSelectedEarthquake(earthquake);
@@ -62,7 +64,6 @@ export const EarthquakeList = ({ filters }: EarthquakeListProps) => {
     setIsModalOpen(false);
   };
 
-  if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
@@ -97,7 +98,7 @@ export const EarthquakeList = ({ filters }: EarthquakeListProps) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {data?.earthquakes.edges.map((earthquake) => (
+              {currentData?.earthquakes.edges.map((earthquake) => (
                 <tr key={earthquake.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {earthquake.location}
@@ -118,6 +119,16 @@ export const EarthquakeList = ({ filters }: EarthquakeListProps) => {
                   </td>
                 </tr>
               ))}
+              {!loading && currentData?.earthquakes.edges.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="p-4 text-center text-sm text-gray-500"
+                  >
+                    No earthquakes found.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
@@ -130,14 +141,19 @@ export const EarthquakeList = ({ filters }: EarthquakeListProps) => {
           >
             Previous
           </button>
-          <span className="text-sm text-gray-700">
-            Page {page + 1} of{' '}
-            {Math.ceil(data?.earthquakes.pageInfo.totalCount || 0 / pageSize)}
-          </span>
+
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-700">
+              Page {page + 1} of{' '}
+              {Math.ceil(
+                (currentData?.earthquakes.pageInfo.totalCount || 0) / pageSize
+              )}
+            </span>
+          </div>
           <button
             className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
             onClick={() => setPage((p) => p + 1)}
-            disabled={!data?.earthquakes.pageInfo.hasNextPage}
+            disabled={!currentData?.earthquakes.pageInfo.hasNextPage}
           >
             Next
           </button>
