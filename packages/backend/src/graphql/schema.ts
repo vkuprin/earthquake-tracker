@@ -1,35 +1,53 @@
-import { gql } from 'apollo-server-express';
-
-export const typeDefs = gql`
-  type Earthquake {
+export const typeDefs = `#graphql
+type Earthquake {
     id: ID!
     location: String!
     magnitude: Float!
     date: String!
     createdAt: String!
     updatedAt: String!
-  }
+}
 
-  input EarthquakeInput {
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    totalCount: Int!
+}
+
+type EarthquakeConnection {
+    edges: [Earthquake!]!
+    pageInfo: PageInfo!
+}
+
+input EarthquakeInput {
     location: String!
     magnitude: Float!
     date: String!
-  }
+}
 
-  input UpdateEarthquakeInput {
+input EarthquakeFilter {
+    minMagnitude: Float
+    maxMagnitude: Float
+    fromDate: String
+    toDate: String
     location: String
-    magnitude: Float
-    date: String
-  }
+}
 
-  type Query {
-    earthquakes: [Earthquake!]!
+input PaginationInput {
+    skip: Int
+    take: Int
+}
+
+type Query {
+    earthquakes(
+        filter: EarthquakeFilter
+        pagination: PaginationInput
+    ): EarthquakeConnection!
     earthquake(id: ID!): Earthquake
-  }
+}
 
-  type Mutation {
+type Mutation {
     createEarthquake(input: EarthquakeInput!): Earthquake!
-    updateEarthquake(id: ID!, input: UpdateEarthquakeInput!): Earthquake!
-    deleteEarthquake(id: ID!): Earthquake!
-  }
+    deleteEarthquake(id: ID!): Earthquake
+}
 `;
