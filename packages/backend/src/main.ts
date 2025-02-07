@@ -24,7 +24,7 @@ async function bootstrap() {
     json(),
     expressMiddleware(server, {
       context: async () => ({ prisma }),
-    }) as RequestHandler,
+    }) as RequestHandler
   );
 
   const port = process.env.PORT || 4000;
@@ -32,10 +32,17 @@ async function bootstrap() {
     console.log(`🚀 Server ready at http://localhost:${port}/`);
   });
 
-  app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    console.error('Error:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
-  });
+  app.use(
+    (
+      err: any,
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
+      console.error('Error:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  );
 }
 
 bootstrap().catch((err) => {

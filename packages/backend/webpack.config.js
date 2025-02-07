@@ -27,6 +27,10 @@ module.exports = composePlugins(withNx(), (config) => {
             options: { transpileOnly: true },
           },
         },
+        {
+          test: /\.csv$/,
+          type: 'asset/source'
+        }
       ],
     },
     plugins: [

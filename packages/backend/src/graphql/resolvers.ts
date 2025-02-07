@@ -27,7 +27,8 @@ export const resolvers = {
       const where: Prisma.EarthquakeWhereInput = {};
 
       if (args.filter) {
-        const { minMagnitude, maxMagnitude, fromDate, toDate, location } = args.filter;
+        const { minMagnitude, maxMagnitude, fromDate, toDate, location } =
+          args.filter;
 
         if (minMagnitude !== undefined || maxMagnitude !== undefined) {
           where.magnitude = {};
@@ -58,7 +59,7 @@ export const resolvers = {
         take,
       });
 
-      const formattedEarthquakes = earthquakes.map(eq => ({
+      const formattedEarthquakes = earthquakes.map((eq) => ({
         ...eq,
         date: eq.date.toISOString(),
         createdAt: eq.createdAt.toISOString(),
@@ -75,7 +76,11 @@ export const resolvers = {
       };
     },
 
-    earthquake: async (_parent: unknown, { id }: { id: string }, context: Context) => {
+    earthquake: async (
+      _parent: unknown,
+      { id }: { id: string },
+      context: Context
+    ) => {
       const earthquake = await context.prisma.earthquake.findUnique({
         where: { id },
       });
@@ -94,7 +99,9 @@ export const resolvers = {
   Mutation: {
     createEarthquake: async (
       _parent: unknown,
-      { input }: { input: { location: string; magnitude: number; date: string } },
+      {
+        input,
+      }: { input: { location: string; magnitude: number; date: string } },
       context: Context
     ) => {
       const earthquake = await context.prisma.earthquake.create({
@@ -112,7 +119,11 @@ export const resolvers = {
       };
     },
 
-    deleteEarthquake: async (_parent: unknown, { id }: { id: string }, context: Context) => {
+    deleteEarthquake: async (
+      _parent: unknown,
+      { id }: { id: string },
+      context: Context
+    ) => {
       const earthquake = await context.prisma.earthquake.delete({
         where: { id },
       });
