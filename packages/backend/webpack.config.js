@@ -29,8 +29,8 @@ module.exports = composePlugins(withNx(), (config) => {
         },
         {
           test: /\.csv$/,
-          type: 'asset/source'
-        }
+          type: 'asset/source',
+        },
       ],
     },
     plugins: [

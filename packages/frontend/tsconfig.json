@@ -27,13 +27,14 @@
     "tsBuildInfoFile": "out-tsc/frontend/tsconfig.tsbuildinfo"
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
+    "../dist/frontend/.next/types/**/*.ts",
+    "../frontend/.next/types/**/*.ts",
+    "next-env.d.ts",
     "src/**/*.js",
     "src/**/*.jsx",
-    "../frontend/.next/types/**/*.ts",
-    "../dist/frontend/.next/types/**/*.ts",
-    "next-env.d.ts"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "out-tsc",

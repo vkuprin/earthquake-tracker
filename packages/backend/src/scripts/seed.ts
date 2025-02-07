@@ -34,7 +34,12 @@ async function seed() {
       date: Date;
     }> = [];
 
-    const csvPath = join(process.cwd(), 'src', 'assets', 'Global_Earthquakes_1970-2014.csv');
+    const csvPath = join(
+      process.cwd(),
+      'src',
+      'assets',
+      'Global_Earthquakes_1970-2014.csv'
+    );
     console.log(`📁 Reading CSV from: ${csvPath}`);
 
     const parser = createReadStream(csvPath).pipe(
