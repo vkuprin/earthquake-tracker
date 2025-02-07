@@ -1,124 +1,120 @@
 # Earthquake Tracker
 
-A full-stack application for tracking and managing earthquake data using TypeScript, Node.js, Next.js, and Apollo GraphQL.
+A full-stack application for tracking and managing earthquake data built with TypeScript, Node.js, Next.js, and Apollo GraphQL.
 
-## Features
+## Architecture Overview
 
-- GraphQL API for CRUD operations on earthquake data
-- Data visualization with charts and statistics
-- Filtering and pagination
-- CSV data import functionality
-- Responsive frontend interface
+### Backend Architecture
+- **Framework**: Express.js with Apollo Server 4
+- **Database**: PostgreSQL with Prisma ORM
+- **API**: GraphQL
+- **Data Import**: CSV parsing functionality
 
-## Tech Stack
+### Frontend Architecture
+- **Framework**: Next.js with TypeScript
+- **Data Fetching**: Apollo Client
+- **State Management**: React hooks and Apollo Cache
+- **Styling**: TailwindCSS
 
-- **Backend**:
+## Project Structure
+```
+earthquake-tracker/
+├── packages/
+│   ├── backend/                # Backend application
+│   │   ├── src/
+│   │   │   ├── graphql/       # GraphQL schema and resolvers
+│   │   │   ├── scripts/       # Data import scripts
+│   │   │   └── types/         # TypeScript types
+│   │   └── prisma/            # Database schema and migrations
+│   ├── frontend/              # Frontend application
+│   │   └── src/
+│   │       ├── components/    # React components
+│   │       ├── lib/          # Utilities and types
+│   │       └── app/          # Next.js pages
+│   └── shared-types/          # Shared TypeScript interfaces
+```
 
-  - Node.js with Express
-  - Apollo Server v4
-  - Prisma ORM
-  - PostgreSQL database
-  - TypeScript
+## Setup and Installation
 
-- **Frontend**:
-  - Next.js
-  - Apollo Client
-  - Recharts for data visualization
-  - TailwindCSS for styling
-  - TypeScript
-
-## Prerequisites
-
+### Prerequisites
 - Node.js (v18 or later)
 - pnpm (v8 or later)
 - PostgreSQL
 
-## Setup Instructions
-
-1. Clone the repository:
-
+### Development Setup
+1. Clone and Install:
 ```bash
 git clone <repository-url>
 cd earthquake-tracker
-```
-
-2. Install dependencies:
-
-```bash
 pnpm install
 ```
 
-3. Set up environment variables:
-
-Create `.env` file in packages/backend:
-
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/earthquake_db"
-```
-
-4. Set up the database:
-
+2. Database Setup:
 ```bash
+# In packages/backend
 cd packages/backend
+
+# Setup .env file
+echo "DATABASE_URL=\"postgresql://user:password@localhost:5432/earthquake_db\"" > .env
+
+# Run migrations
 pnpm prisma migrate dev
-pnpm prisma generate
-```
 
-5. Import initial data:
-
-```bash
+# Import initial data
 nx run backend:seed
 ```
 
-6. Start the development servers:
-
-In separate terminals:
-
+3. Start Development Servers:
 ```bash
-# Start backend
+# Start backend (http://localhost:4000)
 nx serve backend
 
-# Start frontend
+# Start frontend (http://localhost:3000)
 nx serve frontend
 ```
 
-7. Access the application:
-
-- Frontend: http://localhost:3000
-- GraphQL Playground: http://localhost:4000/graphql
-
-## Project Structure
-
-```
-earthquake-tracker/
-├── packages/
-│   ├── backend/              # Backend application
-│   │   ├── src/
-│   │   │   ├── graphql/     # GraphQL schema and resolvers
-│   │   │   ├── assets/      # CSV data
-│   │   │   └── scripts/     # Seeding scripts
-│   │   └── prisma/          # Database schema and migrations
-│   ├── frontend/            # Frontend application
-│   │   └── src/
-│   │       ├── components/  # React components
-│   │       └── app/        # Next.js pages
-│   └── shared-types/        # Shared TypeScript types
-└── README.md
-```
-
-## Available Scripts
-
-- `nx serve backend` - Start the backend server
-- `nx serve frontend` - Start the frontend development server
-- `nx run backend:seed` - Import CSV data
-- `nx lint` - Run linting
-- `nx test` - Run tests
-
 ## API Documentation
 
-### GraphQL Queries
+### GraphQL Schema
 
+#### Types
 ```graphql
+type Earthquake {
+  id: ID!
+  location: String!
+  magnitude: Float!
+  date: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+input EarthquakeInput {
+  location: String!
+  magnitude: Float!
+  date: String!
+}
+
+input UpdateEarthquakeInput {
+  location: String
+  magnitude: Float
+  date: String
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  totalCount: Int!
+}
+
+type EarthquakesResponse {
+  edges: [Earthquake!]!
+  pageInfo: PageInfo!
+}
+```
+
+#### Queries
+```graphql
+# Get paginated earthquakes with optional filtering
 query GetEarthquakes($filter: EarthquakeFilter, $pagination: PaginationInput) {
   earthquakes(filter: $filter, pagination: $pagination) {
     edges {
@@ -134,11 +130,21 @@ query GetEarthquakes($filter: EarthquakeFilter, $pagination: PaginationInput) {
     }
   }
 }
+
+# Get single earthquake by ID
+query GetEarthquake($id: ID!) {
+  earthquake(id: $id) {
+    id
+    location
+    magnitude
+    date
+  }
+}
 ```
 
-### GraphQL Mutations
-
+#### Mutations
 ```graphql
+# Create new earthquake
 mutation CreateEarthquake($input: EarthquakeInput!) {
   createEarthquake(input: $input) {
     id
@@ -148,6 +154,7 @@ mutation CreateEarthquake($input: EarthquakeInput!) {
   }
 }
 
+# Update existing earthquake
 mutation UpdateEarthquake($id: ID!, $input: UpdateEarthquakeInput!) {
   updateEarthquake(id: $id, input: $input) {
     id
@@ -157,9 +164,115 @@ mutation UpdateEarthquake($id: ID!, $input: UpdateEarthquakeInput!) {
   }
 }
 
+# Delete earthquake
 mutation DeleteEarthquake($id: ID!) {
   deleteEarthquake(id: $id) {
     id
   }
 }
+```
+
+### Frontend Components
+
+#### EarthquakeList
+Main component for displaying earthquakes with pagination and filtering.
+```typescript
+interface EarthquakeListProps {
+  filters: FilterState;
+}
+```
+
+#### EarthquakeForm
+Form component for creating and updating earthquakes.
+```typescript
+interface EarthquakeFormProps {
+  earthquake?: Earthquake;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+```
+
+#### FilterPanel
+Component for handling earthquake filtering.
+```typescript
+interface FilterPanelProps {
+  filters: FilterState;
+  onFilterChange: (filters: FilterState) => void;
+}
+```
+
+## Database Schema
+
+```prisma
+model Earthquake {
+  id        String   @id @default(uuid())
+  location  String
+  magnitude Float
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+```
+
+## Error Handling
+
+### Backend
+- GraphQL errors are propagated with proper error codes
+- Database errors are caught and mapped to user-friendly messages
+- Invalid input validation is handled at the GraphQL schema level
+
+### Frontend
+- Apollo error states are handled in components
+- Loading states are displayed during data fetches
+- Form validation provides immediate user feedback
+- Network errors are caught and displayed to users
+
+## Available Scripts
+
+### Root Directory
+```bash
+pnpm lint          # Run linting across all packages
+pnpm typecheck     # Run type checking
+pnpm test          # Run tests
+```
+
+### Backend
+```bash
+nx serve backend   # Start development server
+nx build backend   # Build for production
+nx test backend    # Run backend tests
+nx run backend:seed # Import CSV data
+```
+
+### Frontend
+```bash
+nx serve frontend  # Start development server
+nx build frontend  # Build for production
+nx test frontend   # Run frontend tests
+```
+
+## Deployment
+
+1. Build all packages:
+```bash
+pnpm build
+```
+
+2. Backend deployment:
+```bash
+cd packages/backend
+# Set production environment variables
+# Run migrations
+prisma migrate deploy
+# Start server
+node dist/main.js
+```
+
+3. Frontend deployment:
+```bash
+cd packages/frontend
+# Build Next.js application
+next build
+# Start production server
+next start
 ```
