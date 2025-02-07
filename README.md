@@ -1,89 +1,165 @@
-# EarthquakeTracker
+# Earthquake Tracker
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A full-stack application for tracking and managing earthquake data using TypeScript, Node.js, Next.js, and Apollo GraphQL.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## Features
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+- GraphQL API for CRUD operations on earthquake data
+- Data visualization with charts and statistics
+- Filtering and pagination
+- CSV data import functionality
+- Responsive frontend interface
 
-## Finish your CI setup
+## Tech Stack
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/jt6lJ5OKLV)
+- **Backend**:
 
-## Generate a library
+  - Node.js with Express
+  - Apollo Server v4
+  - Prisma ORM
+  - PostgreSQL database
+  - TypeScript
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+- **Frontend**:
+  - Next.js
+  - Apollo Client
+  - Recharts for data visualization
+  - TailwindCSS for styling
+  - TypeScript
+
+## Prerequisites
+
+- Node.js (v18 or later)
+- pnpm (v8 or later)
+- PostgreSQL
+
+## Setup Instructions
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd earthquake-tracker
 ```
 
-## Run tasks
+2. Install dependencies:
 
-To build the library use:
-
-```sh
-npx nx build pkg1
+```bash
+pnpm install
 ```
 
-To run any task with Nx use:
+3. Set up environment variables:
 
-```sh
-npx nx <target> <project-name>
+Create `.env` file in packages/backend:
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/earthquake_db"
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+4. Set up the database:
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Versioning and releasing
-
-To version and release the library use
-
-```
-npx nx release
+```bash
+cd packages/backend
+pnpm prisma migrate dev
+pnpm prisma generate
 ```
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+5. Import initial data:
 
-[Learn more about Nx release &raquo;](hhttps://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
+```bash
+nx run backend:seed
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+6. Start the development servers:
 
-```sh
-npx nx sync:check
+In separate terminals:
+
+```bash
+# Start backend
+nx serve backend
+
+# Start frontend
+nx serve frontend
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+7. Access the application:
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- Frontend: http://localhost:3000
+- GraphQL Playground: http://localhost:4000/graphql
 
-## Install Nx Console
+## Project Structure
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+```
+earthquake-tracker/
+├── packages/
+│   ├── backend/              # Backend application
+│   │   ├── src/
+│   │   │   ├── graphql/     # GraphQL schema and resolvers
+│   │   │   ├── assets/      # CSV data
+│   │   │   └── scripts/     # Seeding scripts
+│   │   └── prisma/          # Database schema and migrations
+│   ├── frontend/            # Frontend application
+│   │   └── src/
+│   │       ├── components/  # React components
+│   │       └── app/        # Next.js pages
+│   └── shared-types/        # Shared TypeScript types
+└── README.md
+```
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Available Scripts
 
-## Useful links
+- `nx serve backend` - Start the backend server
+- `nx serve frontend` - Start the frontend development server
+- `nx run backend:seed` - Import CSV data
+- `nx lint` - Run linting
+- `nx test` - Run tests
 
-Learn more:
+## API Documentation
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### GraphQL Queries
 
-And join the Nx community:
+```graphql
+query GetEarthquakes($filter: EarthquakeFilter, $pagination: PaginationInput) {
+  earthquakes(filter: $filter, pagination: $pagination) {
+    edges {
+      id
+      location
+      magnitude
+      date
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      totalCount
+    }
+  }
+}
+```
 
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### GraphQL Mutations
+
+```graphql
+mutation CreateEarthquake($input: EarthquakeInput!) {
+  createEarthquake(input: $input) {
+    id
+    location
+    magnitude
+    date
+  }
+}
+
+mutation UpdateEarthquake($id: ID!, $input: UpdateEarthquakeInput!) {
+  updateEarthquake(id: $id, input: $input) {
+    id
+    location
+    magnitude
+    date
+  }
+}
+
+mutation DeleteEarthquake($id: ID!) {
+  deleteEarthquake(id: $id) {
+    id
+  }
+}
+```
