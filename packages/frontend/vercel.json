@@ -1,5 +1,4 @@
 {
   "installCommand": "yum install hostname && pnpm install",
-  "buildCommand": "cd ../../ && nx build frontend",
-  "outputDirectory": "dist/packages/frontend"
+  "buildCommand": "cd ../../ && nx build frontend"
 }

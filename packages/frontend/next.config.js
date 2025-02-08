@@ -13,6 +13,7 @@ const nextConfig = {
   typescript: {
     tsconfigPath: 'tsconfig.next.json',
   },
+  output: "standalone",
 };
 
 const plugins = [
