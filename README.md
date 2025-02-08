@@ -50,7 +50,7 @@ earthquake-tracker/
 1. Clone and Install:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/vkuprin/earthquake-tracker
 cd earthquake-tracker
 pnpm install
 ```
