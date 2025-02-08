@@ -1,7 +1,0 @@
-{
-  "buildCommand": "nx build frontend",
-  "installCommand": "yum install hostname && pnpm install",
-  "routes": [
-    { "src": "/(.*)", "dest": "/packages/frontend/$1" }
-  ]
-}
