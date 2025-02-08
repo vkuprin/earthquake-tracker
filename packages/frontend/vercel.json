@@ -1,4 +1,0 @@
-{
-  "installCommand": "yum install hostname && pnpm install",
-  "buildCommand": "cd ../../ && nx build frontend"
-}
