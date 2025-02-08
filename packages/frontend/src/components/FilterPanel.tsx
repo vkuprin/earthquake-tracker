@@ -15,7 +15,6 @@ interface FilterPanelProps {
     toDate: string;
     location: string;
   }) => void;
-  // onClearFilters: () => void;
 }
 
 export function FilterPanel({ filters, onFilterChange }: FilterPanelProps) {

@@ -59,7 +59,6 @@ type Mutation {
 }
 `;
 
-// packages/backend/src/graphql/resolvers.ts
 import { Context } from '../types';
 
 export const resolvers = {

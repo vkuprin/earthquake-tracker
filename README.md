@@ -1,4 +1,6 @@
-# Earthquake Tracker
+# 🪨 Earthquake Tracker
+
+![Node.js](https://img.shields.io/badge/node-18%2B-brightgreen)
 
 A full-stack application for tracking and managing earthquake data built with TypeScript, Node.js, Next.js, and Apollo GraphQL.
 

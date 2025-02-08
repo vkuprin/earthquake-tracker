@@ -13,12 +13,9 @@ const nextConfig = {
   typescript: {
     tsconfigPath: 'tsconfig.next.json',
   },
-  output: "standalone",
+  output: 'standalone',
 };
 
-const plugins = [
-  // Add more Next.js plugins to this list if needed.
-  withNx,
-];
+const plugins = [withNx];
 
 module.exports = composePlugins(...plugins)(nextConfig);
