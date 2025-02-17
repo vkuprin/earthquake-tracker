@@ -119,6 +119,20 @@ export const resolvers = {
       };
     },
 
+    updateEarthquake: async (
+      _parent: unknown,
+      {id, input}: {id: string, input: { location: string; magnitude: number; date: string; }},
+      context: Context
+    ) => {
+      return context.prisma.earthquake.update({
+        where: { id },
+        data: {
+          ...input,
+          date: input.date ? new Date(input.date) : undefined,
+        },
+      });
+    },
+
     deleteEarthquake: async (
       _parent: unknown,
       { id }: { id: string },
