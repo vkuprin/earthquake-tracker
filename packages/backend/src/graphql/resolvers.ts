@@ -1,5 +1,6 @@
 import { Context } from '../types';
 import { Prisma } from '@prisma/client';
+import { GraphQLError } from 'graphql/error';
 
 interface EarthquakeFilter {
   minMagnitude?: number;
@@ -104,6 +105,29 @@ export const resolvers = {
       }: { input: { location: string; magnitude: number; date: string } },
       context: Context
     ) => {
+      if (input.magnitude <= 0) {
+        throw new GraphQLError('Magnitude must be greater than 0', {
+          extensions: { code: 'BAD_USER_INPUT', argumentName: 'magnitude' },
+        });
+      }
+
+      if (input.date) {
+        const inputDate = new Date(input.date);
+        const currentDate = new Date();
+
+        if (isNaN(inputDate.getTime())) {
+          throw new GraphQLError('Invalid date format', {
+            extensions: { code: 'BAD_USER_INPUT', argumentName: 'date' },
+          });
+        }
+
+        if (inputDate > currentDate) {
+          throw new GraphQLError('Date must be in the past', {
+            extensions: { code: 'BAD_USER_INPUT', argumentName: 'date' },
+          });
+        }
+      }
+
       const earthquake = await context.prisma.earthquake.create({
         data: {
           ...input,
@@ -121,7 +145,13 @@ export const resolvers = {
 
     updateEarthquake: async (
       _parent: unknown,
-      {id, input}: {id: string, input: { location: string; magnitude: number; date: string; }},
+      {
+        id,
+        input,
+      }: {
+        id: string;
+        input: { location: string; magnitude: number; date: string };
+      },
       context: Context
     ) => {
       return context.prisma.earthquake.update({
